@@ -1,0 +1,10 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/FeeManagement.Domain/FeeManagement.Domain.csproj" />
+    <Project Path="src/FeeManagement.Infrastructure/FeeManagement.Infrastructure.csproj" />
+    <Project Path="src/FeeManagement.Tests/FeeManagement.Tests.csproj" />
+  </Folder>
+  <Folder Name="/src/FeeManagement.Functions/">
+    <Project Path="src/FeeManagement.Functions/FeeManagement_Functions.csproj" />
+  </Folder>
+</Solution>
