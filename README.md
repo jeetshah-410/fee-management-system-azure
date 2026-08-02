@@ -9,49 +9,6 @@ The system uses a 3-layer Clean Architecture approach:
 2. **Infrastructure**: Contains EF Core DbContext, repository implementations, and external services (SendGrid).
 3. **Functions**: The Azure Functions (Isolated Worker .NET 8) host that wires dependencies and provides HTTP/Timer triggers.
 
-```mermaid
-graph TD
-    %% Define Styles
-    classDef client fill:#e1f5fe,stroke:#03a9f4,stroke-width:2px;
-    classDef azure fill:#0078d4,stroke:#005a9e,stroke-width:2px,color:white;
-    classDef app fill:#e8eaf6,stroke:#3f51b5,stroke-width:2px;
-    classDef db fill:#fff3e0,stroke:#ff9800,stroke-width:2px;
-
-    Student[Student Client]:::client
-    Admin[Admin Client]:::client
-    
-    APIM[Azure API Management]:::azure
-    Entra[Azure AD / Entra ID]:::azure
-    
-    subgraph FunctionApp [Function App - Isolated Worker]
-        AuthMiddleware[ASP.NET Core Auth Middleware]
-        StudentEndpoint[Student Fee API]
-        AdminEndpoint[Admin Fee API]
-        ReminderOrchestrator[Reminder Orchestrator]
-        SendActivity[Send Reminder Activity]
-    end
-    
-    SQL[(Azure SQL Database)]:::db
-    SendGrid[SendGrid / ACS Email]:::azure
-
-    %% Flow
-    Student -- API Key --> APIM
-    Admin -- Login --> Entra
-    Entra -- JWT --> APIM
-    
-    APIM --> AuthMiddleware
-    AuthMiddleware --> StudentEndpoint
-    AuthMiddleware -- "Role: Fee.Admin" --> AdminEndpoint
-    
-    StudentEndpoint --> SQL
-    AdminEndpoint --> SQL
-    
-    Timer((Daily Timer)) --> ReminderOrchestrator
-    ReminderOrchestrator -- Fan Out --> SendActivity
-    SendActivity --> SQL
-    SendActivity --> SendGrid
-```
-
 ## Features
 - **Student API**: View fee payment status (Paid, Partially Paid, Overdue). Secured by API Key.
 - **Admin API**: View and update student fee records. Secured by Azure AD RBAC (`Fee.Admin` role).
