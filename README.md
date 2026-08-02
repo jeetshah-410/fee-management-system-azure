@@ -23,7 +23,7 @@ graph TD
     APIM[Azure API Management]:::azure
     Entra[Azure AD / Entra ID]:::azure
     
-    subgraph Function App (Isolated Worker)
+    subgraph FunctionApp [Function App - Isolated Worker]
         AuthMiddleware[ASP.NET Core Auth Middleware]
         StudentEndpoint[Student Fee API]
         AdminEndpoint[Admin Fee API]
@@ -56,6 +56,19 @@ graph TD
 - **Student API**: View fee payment status (Paid, Partially Paid, Overdue). Secured by API Key.
 - **Admin API**: View and update student fee records. Secured by Azure AD RBAC (`Fee.Admin` role).
 - **Automated Reminders**: Daily Durable Functions orchestration fetches overdue students and sends email reminders in parallel with native retries.
+
+## Traceability (Requirements to Solution)
+| Assignment Requirement | Implemented Solution |
+|---|---|
+| **Azure SQL Database** | Azure SQL + Entity Framework Core repository |
+| **Fee calculations** | `FeeStatusCalculator` (Domain logic) |
+| **Student API** | Azure Function + Azure API Management (API key rate limiting) |
+| **Admin API** | Azure Function + Microsoft Entra ID RBAC (`Fee.Admin` App Role) |
+| **Notifications** | Azure Durable Functions + SendGrid SMTP Relay |
+| **API security** | Split Architecture: API keys for Students, Azure AD for Admins |
+| **Monitoring** | Azure Application Insights (Live Metrics, App Map, KQL Logs) |
+| **Retry policy** | Native Durable Task retry (`TaskOptions.FromRetryPolicy`) in notification activity |
+| **5,000 students** | Indexed `StudentID` + Serverless Functions Fan-Out/Fan-In pattern |
 
 ## Documentation
 For a complete overview of the system, deployment instructions, and operational guidance, please refer to the following documents:
