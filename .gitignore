@@ -483,3 +483,7 @@ $RECYCLE.BIN/
 
 # Azure Functions local settings
 local.settings.json
+
+# Custom build and deployment artifacts
+publish_output/
+deploy.zip
