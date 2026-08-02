@@ -1,6 +1,5 @@
 # Solution Architecture: Serverless Fee Management System
 
-**Prepared for:** Fusion Practices Technical Panel  
 **Target Platform:** Microsoft Azure  
 **Architecture Pattern:** Clean Architecture / Serverless
 
@@ -17,8 +16,6 @@ To maximize scalability and minimize idle compute costs, the system relies entir
 ## 2. System Architecture
 
 The system utilizes a 3-layer **Clean Architecture** (Domain, Infrastructure, Functions) to strictly decouple business logic from external dependencies like databases and SMTP relays.
-
-![System Architecture Diagram](../README.md) *(Note: Please refer to the main repository architecture diagram)*
 
 ### Key Components:
 - **API Gateway:** Azure API Management (APIM)
